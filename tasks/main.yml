@@ -1,0 +1,29 @@
+---
+- name: Pull specified Kibana docker image
+  community.docker.docker_image:
+    name: "{{ kibana_image }}"
+    source: pull
+    tag: "{{ kibana_version }}"
+  notify: Remove Kibana
+
+- name: Ensure all handlers run before continuing
+  ansible.builtin.meta: flush_handlers
+
+- name: Build environment variables for container
+  ansible.builtin.set_fact:
+    kibana_env: "{{ (kibana_env | combine(item.env)) if item.apply else kibana_env }}"
+  loop: "{{ kibana_config }}"
+
+- name: Ensure Kibana container is created
+  community.docker.docker_container:
+    container_default_behavior: no_defaults
+    detach: true
+    env: "{{ kibana_env }}"
+    image: "{{ kibana_image }}:{{ kibana_version }}"
+    interactive: false
+    name: "{{ kibana_name }}"
+    ports: "{{ ((kibana_port | string) + ':5601') if kibana_expose else '[]' }}"
+    pull: false
+    restart_policy: always
+    state: present
+  notify: Restart Kibana

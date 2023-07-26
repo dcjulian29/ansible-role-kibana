@@ -1,0 +1,10 @@
+---
+elasticsearch_hosts:
+  - http://elasticsearch:9200
+kibana_env_additional: []
+kibana_expose: true
+kibana_fqdn: "http://{{ ansible_fqdn }}"
+kibana_image: docker.elastic.co/kibana/kibana
+kibana_name: "kibana_{{ ansible_hostname }}"
+kibana_port: 80
+kibana_version: "8.8.2"
