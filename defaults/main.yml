@@ -7,4 +7,4 @@ kibana_fqdn: "http://{{ ansible_fqdn }}"
 kibana_image: docker.elastic.co/kibana/kibana
 kibana_name: "kibana_{{ ansible_hostname }}"
 kibana_port: 80
-kibana_version: "8.8.2"
+kibana_version: "8.14.0"
