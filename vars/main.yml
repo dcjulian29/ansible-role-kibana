@@ -7,7 +7,4 @@ kibana_config:
 kibana_env: { }
 kibana_env_base:
   TZ: "{{ ansible_date_time.tz }}"
-  ELASTICSEARCH_HOSTS: "{{ elasticsearch_hosts | join(',') }}"
-  SERVER_NAME: "{{ kibana_name }}"
-  SERVER_PUBLICBASEURL: "{{ kibana_fqdn }}"
   XPACK_REPORTING_KIBANASERVER_HOSTNAME: localhost

@@ -1,4 +1,12 @@
 ---
+- name: Ensure the data directory exists
+  ansible.builtin.file:
+    path: "{{ kibana_data_dir }}"
+    state: directory
+    owner: root
+    group: docker
+    mode: "0777"
+
 - name: Pull specified Kibana docker image
   community.docker.docker_image:
     name: "{{ kibana_image }}"
@@ -8,6 +16,15 @@
 
 - name: Ensure all handlers run before continuing
   ansible.builtin.meta: flush_handlers
+
+- name: Copy Kibana configuration file
+  ansible.builtin.template:
+    src: kibana.yml.j2
+    dest: "{{ kibana_data_dir }}/kibana.yml"
+    owner: root
+    group: docker
+    mode: "0644"
+  notify: Restart Kibana
 
 - name: Build environment variables for container
   ansible.builtin.set_fact:
@@ -26,4 +43,6 @@
     pull: false
     restart_policy: always
     state: present
+    volumes:
+      - "{{ kibana_data_dir }}:/usr/share/kibana/config"
   notify: Restart Kibana

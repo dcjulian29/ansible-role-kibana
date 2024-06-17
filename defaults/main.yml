@@ -1,6 +1,7 @@
 ---
 elasticsearch_hosts:
   - http://elasticsearch:9200
+kibana_data_dir: "/opt/{{ kibana_name }}"
 kibana_env_additional: []
 kibana_expose: true
 kibana_fqdn: "http://{{ ansible_fqdn }}"
